@@ -47,7 +47,7 @@ public class CollisionThread extends Thread {
 		synchronized (app.ObjectList){
 
 			if(app.ObjectList.size() > 1){
-				//Zur������cksetzen f������r neuen Schleifendurchlauf
+				//Zurücksetzen für neuen Schleifendurchlauf
 				deletedObjects = 0;
 
 				for (int i = 0; i < (app.ObjectList.size() - 1 - this.deletedObjects); i++){
@@ -105,7 +105,7 @@ public class CollisionThread extends Thread {
 							if(app.ObjectList.get(i) instanceof Taube && (app.ObjectList.get(j) instanceof Greifvogel ||app.ObjectList.get(j) instanceof Wolkenkratzer)){
 								DeleteObjectCollision(i, j);
 							}
-							//Ausweichman������ver bei 2 Objekten gleichen Typs
+							//Ausweichmanöver bei 2 Objekten gleichen Typs
 							if(app.ObjectList.get(i) instanceof Greifvogel && app.ObjectList.get(j) instanceof Greifvogel || app.ObjectList.get(i) instanceof Taube && app.ObjectList.get(j) instanceof Taube){
 								dodge(i, j);
 							}
@@ -120,7 +120,7 @@ public class CollisionThread extends Thread {
 			}
 		}
 	}
-	//Aufr������umen der Liste, da "null" Objekte angelegt werden
+	//Aufräumen der Liste, da "null" Objekte angelegt werden
 	public void cleanList(){
 		deletedObjectscleanList = 0;
 		for(int i = 0; i < app.ObjectList.size() - deletedObjectscleanList; i++){
@@ -131,9 +131,9 @@ public class CollisionThread extends Thread {
 		}
 	}
 
-	//Ausweichman������ver + ������berpr������fung auf Verlassen des Panels
+	//Ausweichmanöver + Überprüfung auf Verlassen des Panels
 	public void dodge(int i, int j){
-		app.lblMessageTxt.setText("Ausweichman������ver: " + app.ObjectList.get(i).toString() + " kollidiert mit " + app.ObjectList.get(j).toString());
+		app.lblMessageTxt.setText("Ausweichmanöver: " + app.ObjectList.get(i).toString() + " kollidiert mit " + app.ObjectList.get(j).toString());
 		//Seitverschiebung
 		if(app.ObjectList.get(i).y <= (app.ObjectList.get(j).y + app.ObjectList.get(j).height) || app.ObjectList.get(j).y <= (app.ObjectList.get(i).y + app.ObjectList.get(i).height)){
 			if(app.ObjectList.get(j).x < ((app.ObjectList.get(i).x + app.ObjectList.get(i).width) / 2)){
@@ -164,7 +164,7 @@ public class CollisionThread extends Thread {
 		}
 	}
 
-	//L������schung eines Objektes nach Kollision
+	//Löschung eines Objektes nach Kollision
 	public void DeleteObjectCollision(int i, int j){
 		if(isAnimal(i) && !isAnimal(j)){
 			app.killedAnimals++;
@@ -176,18 +176,18 @@ public class CollisionThread extends Thread {
 		deletedObjects++;
 	}
 
-	//Bei 10 oder mehr get������teten V������geln, r������cht sich die Natur
+	//Bei 10 oder mehr getöteten Vögeln, rächt sich die Natur
 	public void meteoritProof() {
 		if(app.killedAnimals >= 1){
-			Meteorit meteor = new Meteorit("Destroyer", app.PanelWidth);
+			Meteorit meteor = new Meteorit("Destroyer", app.PanelWidth, app);
 			app.ObjectList.add(meteor);
-			//Zerst������rung aller Objekte auf dem Weg
+			//Zerstörung aller Objekte auf dem Weg
 			//Einschlag: GameOver
 		}
 
 	}
 
-	//L������schung verbelibende Objekte bei Game Over
+	//Löschung verbelibende Objekte bei Game Over
 	public void DeleteObjectCollisionAll(){
 		app.ObjectList.clear();
 		app.comboBoxNameEnt.removeAllItems();
@@ -197,9 +197,9 @@ public class CollisionThread extends Thread {
 	//Game Over da Kollateralschaden entstanden
 	public void GameOver(String a){		
 		app.lblMessageTxt.setText("Game Over: " + a);
-		//L������schen aller verbleibenden Objekte in der Liste
+		//Löschen aller verbleibenden Objekte in der Liste
 		DeleteObjectCollisionAll();
-		//Aktivierung des Buttons zum Setzen der Panelgr������������e, wenn keine Objekte im Panel
+		//Aktivierung des Buttons zum Setzen der Panelgröße, wenn keine Objekte im Panel
 		app.btnSetPanelSize.setEnabled(true);
 		app.stop.setEnabled(false);
 		app.updateInfo();

@@ -45,40 +45,40 @@ public class SkyLife {
 
 	//ToDo's
 	//Meteoriten Kollision einbauen
-	//Auslagerung Ausweichman������ver und Kollisions������berpr������fung Erzeugung
-	//Schrittweises Ablaufen lauff������hig machen
+	//Auslagerung Ausweichmanöver und Kollisionsüberprüfung Erzeugung
+	//Schrittweises Ablaufen lauffähig machen
 	//Save and Load implementieren
 	//Button zum Starten des RMI Servers, Feld zur Eingabe von IP-Adresse, Button zum Verbinden zum Server + RMI Innenleben
 	//Remote Steueurung einbauen
 
 
 	//ToTest's
-	//Einf������gen Objekterzeugung mit Kollisions������berpr������fung
-	//Smooth f������r Bewegung ������ber Zwischenzeichnung -> Ver������nderung ������ber MovementThread Formel zur Berechnung von neuer Position
-	//-> eventuell ������nderung Bewegungsabl������ufe generell
+	//Einfügen Objekterzeugung mit Kollisionsüberprüfung
+	//Smooth für Bewegung über Zwischenzeichnung -> Veränderung über MovementThread Formel zur Berechnung von neuer Position
+	//-> eventuell Änderung Bewegungsabläufe generell
 
 
-	// Objekt Liste f������r alle Objekte innerhalb des Panels
+	// Objekt Liste für alle Objekte innerhalb des Panels
 	public List<Figur> ObjectList = new ArrayList<Figur>();
 
-	// Counter f������r get������tete V������gel
+	// Counter für getötete Vögel
 	public int killedAnimals = 0;
 
-	//Liste f������r Entfernung von Objekten	
+	//Liste für Entfernung von Objekten	
 	List<String> ListNameEinf = new ArrayList<String>();
 
 
 	static SkyLife window;
 
-	//Thread f������r Bewegung der Objekte
+	//Thread für Bewegung der Objekte
 	static MovementThread tmov;
-	//Thread f������r Kollisions������berpr������fung
+	//Thread für Kollisionsüberprüfung
 	static CollisionThread tcol;
-	//Thread f������r Neuzeichnung des Panels
+	//Thread für Neuzeichnung des Panels
 	static RepaintThread trep;
 
 
-	//Thread f������r schrittweise Bewegung der Objekte
+	//Thread für schrittweise Bewegung der Objekte
 	//static MovementStepbyStepThread tmovstep;
 
 
@@ -98,51 +98,51 @@ public class SkyLife {
 
 			if (!nameInUse && nameFieldEinf.getText() != "") {
 
-				//������berpr������fung: Objekte d������rfen nicht aufeinander eingef������gt werden!!!
+				//Überprüfung: Objekte dürfen nicht aufeinander eingefügt werden!!!
 
 				if (comboBoxTyp.getSelectedItem().toString() == "Taube") {
 
-					Taube taube = new Taube(nameFieldEinf.getText());
+					Taube taube = new Taube(nameFieldEinf.getText(), window);
 					ObjectList.add(taube);
 					CorrectPosition(taube, ObjectList);
 
-					//Text f������r Message
-					lblMessageTxt.setText(taube.toString() + " eingef������gt");
+					//Text für Message
+					lblMessageTxt.setText(taube.toString() + " eingefügt");
 
 
 				} else if (comboBoxTyp.getSelectedItem().toString() == "Greifvogel") {
 
-					Greifvogel gv = new Greifvogel(nameFieldEinf.getText());
+					Greifvogel gv = new Greifvogel(nameFieldEinf.getText(), window);
 					ObjectList.add(gv);
 					CorrectPosition(gv, ObjectList);
 
-					//Text f������r Message
-					lblMessageTxt.setText(gv.toString() + " eingef������gt");
+					//Text für Message
+					lblMessageTxt.setText(gv.toString() + " eingefügt");
 
 				} else if (comboBoxTyp.getSelectedItem().toString() == "Flugzeug") {
 
-					Flugzeug fz = new Flugzeug(nameFieldEinf.getText());
+					Flugzeug fz = new Flugzeug(nameFieldEinf.getText(), window);
 					ObjectList.add(fz);
 					CorrectPosition(fz, ObjectList);
 
-					//Text f������r Message
-					lblMessageTxt.setText(fz.toString() + " eingef������gt");
+					//Text für Message
+					lblMessageTxt.setText(fz.toString() + " eingefügt");
 
 				} else {
 
-					Wolkenkratzer wk = new Wolkenkratzer(nameFieldEinf.getText());
+					Wolkenkratzer wk = new Wolkenkratzer(nameFieldEinf.getText(), window);
 					ObjectList.add(wk);
 					correctx(wk);
 					wk.y = PanelHeight - wk.height;
 
-					//Text f������r Message
-					lblMessageTxt.setText(wk.toString() + " eingef������gt");
+					//Text für Message
+					lblMessageTxt.setText(wk.toString() + " eingefügt");
 
 				}
 				frame.getContentPane().add(panel);
 				panel.repaint();
 
-				//Hinzuf������gen zur Liste f������r Entfernung
+				//Hinzufügen zur Liste für Entfernung
 				ListNameEinf.add(nameFieldEinf.getText());
 				comboBoxNameEnt.addItem(nameFieldEinf.getText());
 
@@ -150,10 +150,10 @@ public class SkyLife {
 				updateInfo();
 
 			} else {
-				lblMessageTxt.setText("Kein g������ltiger Name eingef������gt! ");
+				lblMessageTxt.setText("Kein gültiger Name eingefügt! ");
 			}
 
-			//Deaktivierung Button f������r Neusetzen der Panelgr������������e, sobald Objekt enthalten
+			//Deaktivierung Button für Neusetzen der Panelgröße, sobald Objekt enthalten
 			if(ObjectList.size() != 0){
 				btnSetPanelSize.setEnabled(false);
 			}
@@ -171,7 +171,7 @@ public class SkyLife {
 				}
 			}
 			panel.repaint();
-			//Aktivierung Button f������r Neusetzen der Panelgr������������e und anhalten der Threads
+			//Aktivierung Button für Neusetzen der Panelgröße und anhalten der Threads
 			if(ObjectList.size() == 0){
 				btnSetPanelSize.setEnabled(true);
 				stop.setEnabled(false);
@@ -184,17 +184,17 @@ public class SkyLife {
 
 	//Aktualisierung der Anzahl der Objekte
 	public void updateInfo(){
-		txtInfo.setText("Panelgr������������e:   H������he: " + PanelHeight
+		txtInfo.setText("Panelgröße:   Höhe: " + PanelHeight
 				+ " Breite: " + PanelWidth
 				+ "      Anzahl Objekte: " + ObjectList.size());
 
 	}
-	//Aktualisierung der Anzahl der get������teten V������gel
+	//Aktualisierung der Anzahl der getöteten Vögel
 	public void updateKilledAnimals(){
-		KilledAnimals.setText("Tote V������gel: " + killedAnimals);
+		KilledAnimals.setText("Tote Vögel: " + killedAnimals);
 	}
 
-	//Kollisionspr������fung; Erweiterung um Kreise notwendig
+	//Kollisionsprüfung; Erweiterung um Kreise notwendig
 	public boolean collision(Figur a, Figur b){
 		//Rechteck kollidiert mit Rechteck
 		if(a.f.toString() == "Rechteck" && b.f.toString() == "Rechteck"){
@@ -241,7 +241,7 @@ public class SkyLife {
 				|| b.middleY() >= a.y && b.middleY() <= (a.y + a.height) && b.middleX() >= (a.x + a.width) && b.middleX() <= (a.x + a.width + (b.x / 2))){
 			return true;
 		}
-		//������berpr������fung
+		//Überprüfung
 		return false;
 	}
 
@@ -265,7 +265,7 @@ public class SkyLife {
 			for(int i = 0; i < (ObjectList.size() - 1); i++){
 				boolean collision = collision(f, ObjectList.get(i));
 				if(collision){
-					//������nderung der x und y Koordinaten zum Entgehen einer Kollision beim Einf������gen
+					//Änderung der x und y Koordinaten zum Entgehen einer Kollision beim Einfügen
 					f.x = (ObjectList.get(i).x + ObjectList.get(i).width + 5);
 					if(f.x > (PanelWidth - f.width)){
 						correctxshift(f);
@@ -289,7 +289,7 @@ public class SkyLife {
 		}
 	}
 
-	//Korrektur x-Koordinate bei Lage au������erhalb des Panels
+	//Korrektur x-Koordinate bei Lage außerhalb des Panels
 	public void correctx(Figur f){
 
 		if((Integer) spinnerX.getValue() >= 0 && (Integer) spinnerX.getValue() <= (PanelWidth - f.width)){
@@ -313,7 +313,7 @@ public class SkyLife {
 		}
 	}
 
-	//Korrektur y-Koordinate bei Lage au������erhalb des Panels
+	//Korrektur y-Koordinate bei Lage außerhalb des Panels
 	public void correcty(Figur f){
 
 		if((Integer) spinnerY.getValue() >= 0 && (Integer) spinnerY.getValue() <= (PanelHeight - f.height)){
@@ -339,7 +339,7 @@ public class SkyLife {
 
 	public void deleteObjectList(String name){
 
-		//Entfernen aus Auswahlliste in ComboBox f������r Entfernung
+		//Entfernen aus Auswahlliste in ComboBox für Entfernung
 
 		for (int i = 0; i < ListNameEinf.size(); i++){
 			if(ListNameEinf.get(i).equals((String) name)){
@@ -441,7 +441,7 @@ public class SkyLife {
 			}
 		});
 
-		// Button f������r schrittweises Ablaufen lassen
+		// Button für schrittweises Ablaufen lassen
 
 		btnNchsterSchritt = new JButton("Next Step");
 		btnNchsterSchritt.setEnabled(false);
@@ -471,7 +471,7 @@ public class SkyLife {
 		comboBoxTyp = new JComboBox<String>();
 		comboBoxTyp.setBounds(70, 15, 150, 25);
 		layeredPaneAdd.add(comboBoxTyp);
-		// Typen welche Hinzugef������gt werden k������nnen
+		// Typen welche Hinzugefügt werden können
 		comboBoxTyp.addItem("Taube");
 		comboBoxTyp.addItem("Greifvogel");
 		comboBoxTyp.addItem("Flugzeug");
@@ -526,19 +526,19 @@ public class SkyLife {
 		});
 
 
-		// Panel-Gr������������e einstellen
+		// Panel-Größe einstellen
 
 		JLayeredPane layeredPanePanelSize = new JLayeredPane();
 		layeredPanePanelSize.setBorder(new LineBorder(new Color(0, 0, 0)));
 		layeredPanePanelSize.setBounds(671, 50, 250, 83);
 		frame.getContentPane().add(layeredPanePanelSize);
 
-		lblPanelgre = new JLabel("Panelgr������������e:");
+		lblPanelgre = new JLabel("Panelgröße:");
 		lblPanelgre.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		lblPanelgre.setBounds(6, 6, 92, 16);
 		layeredPanePanelSize.add(lblPanelgre);
 
-		lblHhe = new JLabel("H������he:");
+		lblHhe = new JLabel("Höhe:");
 		lblHhe.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHhe.setBounds(6, 30, 61, 16);
 		layeredPanePanelSize.add(lblHhe);
@@ -605,7 +605,7 @@ public class SkyLife {
 			public void actionPerformed(ActionEvent e) {
 
 				deleteObject();
-				//Entfernung aus Auswahlliste f������r Entfernen von Objekten
+				//Entfernung aus Auswahlliste für Entfernen von Objekten
 				deleteObjectList((String) comboBoxNameEnt.getSelectedItem());
 			}
 		});
@@ -618,7 +618,7 @@ public class SkyLife {
 		// Anzeige unterhalb des Panels
 
 		txtInfo = new JTextPane();
-		txtInfo.setText("Panelgr������������e:   H������he: " + PanelHeight + " Breite: "
+		txtInfo.setText("Panelgröße:   Höhe: " + PanelHeight + " Breite: "
 				+ PanelWidth + "      Anzahl Objekte: " + ObjectList.size());
 		txtInfo.setBackground(SystemColor.window);
 		txtInfo.setEditable(false);
@@ -626,13 +626,13 @@ public class SkyLife {
 		frame.getContentPane().add(txtInfo);
 
 		KilledAnimals = new JTextPane();
-		KilledAnimals.setText("Tote V������gel: " + killedAnimals);
+		KilledAnimals.setText("Tote Vögel: " + killedAnimals);
 		KilledAnimals.setBackground(SystemColor.window);
 		KilledAnimals.setEditable(false);
 		KilledAnimals.setBounds(788, 250 + PanelHeight + 5, 133, 25);
 		frame.getContentPane().add(KilledAnimals);
 
-		// Feld f������r Ausgabe von Fehlermeldungen
+		// Feld für Ausgabe von Fehlermeldungen
 		lblMessage = new JLabel("Message:");
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setBounds(6, 742, 66, 16);
